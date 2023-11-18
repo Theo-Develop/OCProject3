@@ -289,3 +289,38 @@ footer nav ul {
 	justify-content: flex-end;
 	margin: 2em
 }
+
+.filter-buttons {
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+	height: 37px;
+	align-items: center;
+	margin-bottom: 40px;
+}
+
+.filter {
+	display: flex;
+	height: 37px;
+	padding: 0px 12px;
+	align-items: center;
+	gap: 10px;
+	border-radius: 25px;
+	border: 2px solid var(--green, #1D6154);
+	color: var(--Green, #1D6154);
+	font-family: Syne;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: normal;
+}
+
+.filter:hover {
+	background-color: #1D6154;
+	color: white;
+}
+
+.filter-selected {
+	background-color: #1D6154;
+	color: white;
+}
