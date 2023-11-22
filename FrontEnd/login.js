@@ -32,7 +32,6 @@ async function sendId() {
                 } else if (response.ok) {
                     // Si la réponse est réussie, extraction des données en JSON
                     const result = await response.json();
-                    console.log("6");
 
                     // Vérification du token
                     if (result && result.token) {
@@ -41,15 +40,12 @@ async function sendId() {
 
                         // Redirection vers la page d'acceuil
                         window.location.href = "index.html";
-                        console.log("6");
 
                         // Je vide le formulaire
                         formId.reset();
-                        console.log("4");
 
                         // Changement du texte du lien une dois connecté
                         disconnect();
-                        console.log("5");
                     }
                 }
             } catch (error) {
