@@ -7,7 +7,6 @@ async function sendId() {
     if (formId)
         formId.addEventListener("submit", async function (event) {
             event.preventDefault();
-            console.log("1");
 
             // Récupération des valeurs du formulaire d'identification
             const email = document.querySelector("#email").value;
@@ -17,7 +16,6 @@ async function sendId() {
                 email: email,
                 password: password
             };
-            console.log("2", email, password);
 
             try {
                 // Appel de la fonction fetch avec toutes les informations nécessaires
@@ -26,18 +24,15 @@ async function sendId() {
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(user)
                 });
-                console.log("3", response);
-                console.log(response.status === 401, response.status === 404, response.status === 401 && response.status === 404);
 
                 // Vérification de la réponse
                 if (response.status === 401 || response.status === 404) {
-                    console.log("4");
                     errorMessage.innerHTML = "Le mot de passe ou l'identifiant sont incorrects.";
                     errorMessage.style.display = "block";
                 } else if (response.ok) {
-                    console.log("5");
                     // Si la réponse est réussie, extraction des données en JSON
                     const result = await response.json();
+                    console.log("6");
 
                     // Vérification du token
                     if (result && result.token) {
@@ -46,9 +41,15 @@ async function sendId() {
 
                         // Redirection vers la page d'acceuil
                         window.location.href = "index.html";
+                        console.log("6");
 
                         // Je vide le formulaire
                         formId.reset();
+                        console.log("4");
+
+                        // Changement du texte du lien une dois connecté
+                        disconnect();
+                        console.log("5");
                     }
                 }
             } catch (error) {
@@ -58,6 +59,40 @@ async function sendId() {
         });
 }
 
-
 // Appel de la fonction
 sendId();
+
+// Création de la fonction de déconnexion
+function disconnect() {
+    const loginLink = document.querySelector(".login-logout");
+
+    if (loginLink) {
+        // Vérification si le token est déjà stocké dans le local storage
+        if (localStorage.getItem("token")) {
+
+            // Changement du texte du lien "login" en "logout"
+            loginLink.innerHTML = "logout";
+
+            // Déconnexion lors du clique sur "logout"
+            loginLink.addEventListener("click", function (event) {
+                event.preventDefault();
+
+                // Supression du token du local storage
+                localStorage.removeItem("token");
+
+                // Redirection vers la page d'identification
+                window.location.href = "login.html";
+            });
+        }
+    }
+
+}
+
+// Appel de la fonction lors du chargement du DOM
+document.addEventListener("DOMContentLoaded", function () {
+    sendId();
+    disconnect();
+});
+
+
+
