@@ -318,6 +318,7 @@ footer nav ul {
 .filter:hover {
 	background-color: #1D6154;
 	color: white;
+	cursor: pointer;
 }
 
 .filter-selected {
