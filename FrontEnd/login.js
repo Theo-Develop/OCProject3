@@ -1,5 +1,5 @@
 // Création de la fonction de connexion
-async function sendId() {
+async function initialiseLoginForm() {
     const formId = document.querySelector(".log-in");
     const errorMessage = document.querySelector(".log-error");
 
@@ -43,9 +43,6 @@ async function sendId() {
 
                         // Je vide le formulaire
                         formId.reset();
-
-                        // Changement du texte du lien une dois connecté
-                        disconnect();
                     }
                 }
             } catch (error) {
@@ -55,11 +52,9 @@ async function sendId() {
         });
 }
 
-// Appel de la fonction
-sendId();
 
 // Création de la fonction de déconnexion
-function disconnect() {
+function initialiseLogoutbtn() {
     const loginLink = document.querySelector(".login-logout");
 
     if (loginLink) {
@@ -70,25 +65,25 @@ function disconnect() {
             loginLink.innerHTML = "logout";
 
             // Déconnexion lors du clique sur "logout"
-            loginLink.addEventListener("click", function (event) {
-                event.preventDefault();
-
-                // Supression du token du local storage
-                localStorage.removeItem("token");
-
-                // Redirection vers la page d'identification
-                window.location.href = "login.html";
-            });
+            loginLink.addEventListener("click", onClickBtnLogout);
         }
     }
-
 }
+
+// Appel de la fonction pour se déconnecter
+function onClickBtnLogout(event) {
+    event.preventDefault();
+
+    // Supression du token du local storage
+    localStorage.removeItem("token");
+
+    // Redirection vers la page d'identification
+    window.location.href = "login.html";
+}
+
 
 // Appel de la fonction lors du chargement du DOM
 document.addEventListener("DOMContentLoaded", function () {
-    sendId();
-    disconnect();
+    initialiseLoginForm();
+    initialiseLogoutbtn();
 });
-
-
-
