@@ -53,9 +53,12 @@ async function initialiseLoginForm() {
 }
 
 
-// Création de la fonction de déconnexion
+// Création de la fonction d'initialisation pour l'affichage différent en étant connecté
 function initialiseLogoutbtn() {
     const loginLink = document.querySelector(".login-logout");
+    const head_band = document.querySelector(".head-band");
+    const in_log = document.querySelector(".in-log");
+    const filter_buttons = document.querySelector(".filter-buttons");
 
     if (loginLink) {
         // Vérification si le token est déjà stocké dans le local storage
@@ -63,6 +66,13 @@ function initialiseLogoutbtn() {
 
             // Changement du texte du lien "login" en "logout"
             loginLink.innerHTML = "logout";
+            loginLink.style.cursor = "pointer";
+
+            // Affichage du bandeau et du changement portfolio
+            head_band.style.display = "flex";
+            in_log.style.display = "flex";
+            filter_buttons.style.display = "none";
+
 
             // Déconnexion lors du clique sur "logout"
             loginLink.addEventListener("click", onClickBtnLogout);
@@ -77,8 +87,8 @@ function onClickBtnLogout(event) {
     // Supression du token du local storage
     localStorage.removeItem("token");
 
-    // Redirection vers la page d'identification
-    window.location.href = "login.html";
+    // Redirection vers la page normale pour vérifier les ajouts ou suppresions
+    window.location.href = "index.html";
 }
 
 
