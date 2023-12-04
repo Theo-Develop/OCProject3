@@ -447,6 +447,12 @@ input[type=submit] {
 	top: 0;
 	left: 0;
 	background-color: rgba(0, 0, 0, 0.4);
+	/* Pour que le .in-log ne s'affiche pas dans la modale suite a un index identique */
+	z-index: 2;
+}
+
+.modal-gallery figure {
+	position: relative;
 }
 
 .modal-gallery {
@@ -456,7 +462,6 @@ input[type=submit] {
 	margin-top: 30px;
 	gap: 15px;
 	width: 75%;
-	position: relative;
 }
 
 .modal-gallery img {
@@ -473,6 +478,8 @@ input[type=submit] {
 	padding: 5px;
 	border-radius: 2px;
 	cursor: pointer;
+	left: 45px;
+	top: 5px;
 }
 
 
@@ -481,7 +488,7 @@ input[type=submit] {
 	flex-direction: column;
 	position: fixed;
 	align-items: center;
-	justify-content: center;
+	justify-content: space-around;
 	text-align: center;
 	z-index: 1;
 	background-color: #fff;
@@ -493,6 +500,8 @@ input[type=submit] {
 	left: 50%;
 	transform: translate(-50%, -50%);
 	animation: apparition .3s;
+	width: 630px;
+	height: 688px;
 }
 
 #modal-content h2 {
@@ -513,9 +522,9 @@ input[type=submit] {
 	padding: 0;
 }
 
-.barre-grise {
-	padding-bottom: 40px;
+#modal-content hr {
 	border-bottom: solid 2px grey;
+	width: 75%;
 }
 
 #new-photo {

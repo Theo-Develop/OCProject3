@@ -7,8 +7,8 @@ const modalContent = document.querySelector("#modal-content");
 // OUVERTURE MODALE SUR BOUTON MODIFIER ET MODE EDITION
 const allBtnEdition = document.querySelectorAll(".in-log")
 for (const btn of allBtnEdition) {
-    btn.addEventListener("click", (e) => {
-        e.preventDefault();
+    btn.addEventListener("click", (event) => {
+        event.preventDefault();
         overlayModalContent.style.display = "flex";
         modalContent.style.display = "flex";
         modalProjects(allProjects);
@@ -16,16 +16,16 @@ for (const btn of allBtnEdition) {
 }
 
 // FERMETURE MODAL CONTENT SUR LA CROIX
-document.querySelector("#modal-close").addEventListener("click", (e) => {
-    e.preventDefault();
+document.querySelector("#modal-close").addEventListener("click", (event) => {
+    event.preventDefault();
     overlayModalContent.style.display = "none";
     modalContent.style.display = "none";
 })
 
 
 // FERMETURE A L'APPUI DE LA TOUCHE ECHAP
-window.addEventListener("keydown", function (e) {
-    if (e.key === "Escape" || e.key === "Esc") {
+window.addEventListener("keydown", function (event) {
+    if (event.key === "Escape" || e.key === "Esc") {
         overlayModalContent.style.display = "none";
         modalContent.style.display = "none";
     }
