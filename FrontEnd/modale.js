@@ -55,10 +55,8 @@ function modalProjects(projects) {
         // Vérifie s'il y a déjà une galerie, si oui, la remplace
         const existingGallery = document.querySelector(".modal-gallery");
         if (existingGallery) {
-            console.log("Existing gallery found. Replacing content...");
             existingGallery.innerHTML = modalGalleryHTML;
         } else {
-            console.log("No existing gallery. Adding new gallery...");
             // Sinon, ajoute la nouvelle galerie à l'intérieur de la section "portfolio"
             portfolioSection.insertAdjacentHTML("beforeend", `<div class="modal-gallery">${modalGalleryHTML}</div>`);
         }
@@ -74,15 +72,12 @@ function modalProjects(projects) {
         const deleteIcon = figure.querySelector(".fa-trash-can");
 
         figure.addEventListener("click", (event) => {
+            event.preventDefault();
             const projectId = figure.getAttribute("data-project-id");
             if (deleteIcon && event.target === deleteIcon) {
-                console.log("Delete icon clicked for project ID:", projectId);
-                event.preventDefault();
                 deleteWork(projectId, figure.querySelector("img").alt, localStorage.getItem("token"));
             }
         });
-
-        console.log("Figure added to click event listener:", figure);
     });
 }
 
@@ -90,7 +85,7 @@ function modalProjects(projects) {
 function deleteWork(projectId, projectTitle, token) {
     const deleteConfirm = window.confirm(`Êtes-vous sûr de vouloir supprimer le projet : ${projectTitle} ?`);
     if (deleteConfirm) {
-        const fetchDelete = fetch(`${"http://localhost:5678/api/works"}/${projectId}`, {
+        const fetchDelete = fetch(`http://localhost:5678/api/works/${projectId}`, {
             method: "DELETE",
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -100,7 +95,6 @@ function deleteWork(projectId, projectTitle, token) {
         fetchDelete.then((response) => {
             if (response.ok) {
                 msgDeleteOkF();
-                modalProjects(allProjects);
             } else {
                 // MESSAGE DE SUPPRESSION OK
             }
