@@ -54,7 +54,7 @@ function displayProjects(projects) {
         const gallery = /*html*/ `
         <div class="gallery">
             ${projects.map((project) => /*html*/`
-            <figure>
+            <figure id="project-${project.id}">
                 <img src="${project.imageUrl}" alt="${project.title}" />
                 <figcaption>${project.title}</figcaption>
             </figure>

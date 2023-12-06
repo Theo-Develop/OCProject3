@@ -95,6 +95,18 @@ function deleteWork(projectId, projectTitle, token) {
         fetchDelete.then((response) => {
             if (response.ok) {
                 msgDeleteOkF();
+
+                // Supprime l'élément de la modale
+                const deletedElementModal = document.querySelector(`[data-project-id="${projectId}"]`);
+                if (deletedElementModal) {
+                    deletedElementModal.remove();
+                }
+
+                // Supprime l'élément de la page principale
+                const deletedElementMain = document.getElementById(`project-${projectId}`);
+                if (deletedElementMain) {
+                    deletedElementMain.remove();
+                }
             } else {
                 // MESSAGE DE SUPPRESSION OK
             }
@@ -112,5 +124,3 @@ function msgDeleteOkF() {
         msgDeleteOkSlot.textContent = "";
     }, 3000);
 }
-
-
