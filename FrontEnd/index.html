@@ -63,6 +63,34 @@
 					<div class="msg-delete-ok"></div>
 				</div>
 			</div>
+			<div id="modal-photo">
+				<h2>Ajout photo</h2>
+				<form class="form-add-photo">
+					<div id="form-photo">
+						<i class="fa-regular fa-image display-none" id="iModalImage" style="color: #c5c6c9;"></i>
+						<label class="display-none" for="image" id="btn-new-photo">+ Ajouter une photo</label>
+						<input type="file" name="image" id="image">
+						<p class="display-none">jpg,png : 4mo max</p>
+					</div>
+					<div class="msg-bad-size-format-img">
+					</div>
+					<div class="modal-photo-input">
+						<label for="modal-photo-title">Titre</label>
+						<input type="text" name="title" id="modal-photo-title">
+					</div>
+					<div class="modal-photo-input">
+						<label for="modal-photo-category">Catégorie</label>
+						<select name="category" id="modal-photo-category">
+						</select>
+					</div>
+					<div class="barre-grise"></div>
+					<input type="submit" class="modal-valider">
+					<div class="msg-add-photo-success-error">
+					</div>
+				</form>
+				<button id="modal-photo-close"><i class="fa-solid fa-xmark"></i></button>
+				<button id="modal-return"><i class="fa-solid fa-arrow-left"></i></button>
+			</div>-
 			<section id="portfolio">
 				<div class="portfolio-header">
 					<h2>Mes Projets</h2>

@@ -1,50 +1,60 @@
 let allProjects = [];
+let allCategories = [];
 
-//Appel de la fonction initialise **evitez d'avoir autre chose que des fonctions en racines**
+//Appel de la fonction initialise **évitez d'avoir autre chose que des fonctions en racines**
 function initialise() {
+    // Récupération des projets
     fetch("http://localhost:5678/api/works")
         .then(response => response.json())
         .then(data => {
             allProjects = data;
-            displayProjects(data)
+            displayProjects(data);
         });
 
-    fetch("http://localhost:5678/api/categories")
-        .then(response => response.json())
-        .then(categories => {
-            const filterButtons = document.querySelector(".filter-buttons");
+    // Récupération des catégories
+    getCategories().then(categories => {
+        allCategories = categories;
 
-            //Utilise map pour générer la structure HTML pour chaque catégorie
-            const buttonsHtml = categories.map(category => {
-                return /*html*/`
-            <button class="filter">${category.name}</button>
+        const filterButtons = document.querySelector(".filter-buttons");
+
+        // Utilise map pour générer la structure HTML pour chaque catégorie
+        const buttonsHtml = categories.map(category => {
+            return /*html*/`
+                <button class="filter">${category.name}</button>
             `;
-            }).join('');
+        }).join('');
 
-            // Ajoute le bouton "Tous" en tant que premier bounton
-            const allButtonHtml = /*html*/ `
-        <button class="filter filter-selected">Tous</button>
+        // Ajoute le bouton "Tous" en tant que premier bouton
+        const allButtonHtml = /*html*/`
+            <button class="filter filter-selected">Tous</button>
         `;
 
-            // Crée la structure complète en combinant le bouton "Tous" avec les boutons de catégories
-            const filterButtonsHtml = allButtonHtml + buttonsHtml;
+        // Crée la structure complète en combinant le bouton "Tous" avec les boutons de catégories
+        const filterButtonsHtml = allButtonHtml + buttonsHtml;
 
-            // Utilise innerHTML pour mettre à jour le contenu de la div filter-buttons
-            filterButtons.innerHTML = filterButtonsHtml;
+        // Utilise innerHTML pour mettre à jour le contenu de la div filter-buttons
+        filterButtons.innerHTML = filterButtonsHtml;
 
-            // Récupère tous les boutons de filtre
-            const buttons = document.querySelectorAll(".filter-buttons button")
+        // Récupère tous les boutons de filtre
+        const buttons = document.querySelectorAll(".filter-buttons button");
 
-            // Ajoute un event listener à chaque bouton de filtre 
-            buttons.forEach(button => {
-                button.addEventListener("click", () => {
-                    //Si le bouton "Tous" est cliqué (avec la classe "filter-selected"), on appelle "filterProjects" avec categoryId à null
-                    //Sinon, on recherche l'id de la catégorie associée et on appelle "filterProjects" avec et cet id pour filtrer les projets par catégorie.
-                    const categoryId = button.classList.contains("filter-selected") ? null : categories.find(category => category.name === button.textContent)?.id;
-                    filterProjects(categoryId, button);
-                });
+        // Ajoute un event listener à chaque bouton de filtre 
+        buttons.forEach(button => {
+            button.addEventListener("click", () => {
+                //Si le bouton "Tous" est cliqué (avec la classe "filter-selected"), on appelle "filterProjects" avec categoryId à null
+                //Sinon, on recherche l'id de la catégorie associée et on appelle "filterProjects" avec et cet id pour filtrer les projets par catégorie.
+                const categoryId = button.classList.contains("filter-selected") ? null : categories.find(category => category.name === button.textContent)?.id;
+                filterProjects(categoryId, button);
             });
         });
+    });
+}
+
+// Fonction pour récupérer les catégories
+function getCategories() {
+    return fetch("http://localhost:5678/api/categories")
+        .then(response => response.json())
+        .then(categories => categories);
 }
 
 initialise();

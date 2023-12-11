@@ -2,6 +2,7 @@
 const overlayModalContent = document.querySelector(".overlay-modal-content");
 const modalGallery = document.querySelector(".modal-gallery");
 const modalContent = document.querySelector("#modal-content");
+const modalPhoto = document.querySelector("#modal-photo");
 
 
 // OUVERTURE MODALE SUR BOUTON MODIFIER ET MODE EDITION
@@ -28,14 +29,16 @@ window.addEventListener("keydown", function (event) {
     if (event.key === "Escape" || event.key === "Esc") {
         overlayModalContent.style.display = "none";
         modalContent.style.display = "none";
+        modalPhoto.style.display = "none";
     }
 })
 
-// FERMETURE MODALE AU CLIC SUR LE COTE
+// FERMETURE des 2MODALS AU CLIC SUR LE COTE
 window.onclick = (event) => {
-    if (event.target == overlayModalContent) {
+    if (event.target == overlayModalContent || event.target == modalPhoto) {
         overlayModalContent.style.display = "none";
         modalContent.style.display = "none";
+        modalPhoto.style.display = "none";
     }
 }
 
@@ -124,3 +127,45 @@ function msgDeleteOkF() {
         msgDeleteOkSlot.textContent = "";
     }, 3000);
 }
+
+// OUVERTURE MODAL PHOTO
+document.querySelector("#new-photo").addEventListener("click", (e) => {
+    e.preventDefault();
+    modalPhoto.style.display = "flex";
+    modalContent.style.display = "none";
+    showCategoriesModal(allProjects);
+})
+
+// FLECHE RETOUR POUR REVENIR SUR MODAL CONTENT
+document.querySelector("#modal-return").addEventListener("click", (e) => {
+    e.preventDefault();
+    modalPhoto.style.display = "none";
+    modalContent.style.display = "flex";
+    overlayModalContent.style.display = "flex";
+    modalProjects();
+    resetForm();
+})
+
+// FERMETURE MODAL PHOTO SUR LA CROIX
+document.querySelector("#modal-photo-close").addEventListener("click", (event) => {
+    event.preventDefault();
+    modalPhoto.style.display = "none";
+    overlayModalContent.style.display = "none";
+})
+
+// FONCTION AFFICHER LES CATEGORIES DANS LA MODAL PHOTO
+const showCategoriesModal = () => {
+    const categorySelect = document.querySelector("#modal-photo-category");
+    categorySelect.innerHTML = "<option value='' hidden></option>";
+
+    // Utilisez les catégories récupérées dans initialise
+    allCategories.forEach(category => {
+        const option = document.createElement("option");
+        option.setAttribute("value", category.id);
+        option.textContent = category.name; // Assurez-vous d'avoir la propriété correcte pour le nom de la catégorie
+        categorySelect.appendChild(option);
+    });
+};
+
+
+
