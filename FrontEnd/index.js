@@ -83,6 +83,9 @@ function displayProjects(projects) {
             //sinon, ajoute la nouvelle gallerie à l'intérieur de la section "portfolio"
             portfolioSection.insertAdjacentHTML("beforeend", gallery);
         }
+
+        // Ajoute un journal pour vérifier si l'élément avec l'ID correct est ajouté à la page
+        console.log("Gallery created:", gallery);
     };
 
     createGallery(); // Appel de la fonction createGallery pour créer la galerie d'images
@@ -112,4 +115,5 @@ function setSelectedFilter(selectedButton) {
     });
     selectedButton.classList.add("filter-selected");
 };
+
 

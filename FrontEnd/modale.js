@@ -59,7 +59,7 @@ function createProjectForModalDisplay() {
             event.preventDefault();
             const projectId = figure.getAttribute("data-project-id");
             if (deleteIcon && event.target === deleteIcon) {
-                deleteWork(projectId, figure.querySelector("img").alt);
+                deleteWork(projectId, figure.querySelector("img").alt, figure);
             }
         });
     });
@@ -98,7 +98,7 @@ async function deleteWork(projectId, projectTitle) {
             }
         });
 
-        fetchDelete.then((response) => {
+        fetchDelete.then(async (response) => {
             if (response.ok) {
                 msgDeleteOkF();
 
@@ -116,12 +116,30 @@ async function deleteWork(projectId, projectTitle) {
 
                 // Mettez à jour allProjects après la suppression
                 allProjects = allProjects.filter(project => project.id !== projectId);
-                console.log("allProjects après suppression :", allProjects);
+
+                await refreshProjects();
 
             } else {
                 // MESSAGE DE SUPPRESSION OK
             }
         });
+    }
+}
+
+// FONCTION POUR RAFRAICHIR LA LISTE allProjects
+async function refreshProjects() {
+    // Effectuez une requête au serveur pour obtenir la liste des projets
+    const response = await fetch("http://localhost:5678/api/works/", {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${localStorage.getItem("token")}`
+        }
+    });
+
+    if (response.ok) {
+        allProjects = await response.json();
+    } else {
+        console.error("Failed to refresh projects");
     }
 }
 
@@ -163,7 +181,7 @@ document.querySelector("#modal-photo-close").addEventListener("click", (event) =
 
 // FONCTION AFFICHER LES CATEGORIES DANS LA MODAL PHOTO
 categorySelect = document.querySelector("#modal-photo-category");
-const showCategoriesModal = () => {
+function showCategoriesModal() {
     categorySelect.innerHTML = "<option value='' hidden></option>";
 
     // Utilisez les catégories récupérées dans initialise
@@ -209,6 +227,8 @@ function checkForm() {
 function resetForm() {
     document.querySelector("#modal-photo-title").value = "";
     imageInput.value = "";
+    categorySelect.selectedIndex = 0;
+
     allContentPhotoBox.forEach((content) => {
         content.style.display = "block";
         if (document.querySelector("#form-photo img")) {
@@ -327,7 +347,32 @@ const sendWork = async (event) => {
         msgAddSuccessF();
         resetForm();
         createProjectForModalDisplay();
+        addImageToMain(newProject);
     } else {
         msgAddErrorF();
     }
+}
+
+function addImageToMain(project) {
+    const mainGallery = document.querySelector("#portfolio .gallery");
+
+    // Crée un nouvel élément figure pour la nouvelle image
+    const newFigure = document.createElement("figure");
+    newFigure.id = `project-${project.id}`;
+
+    // Crée un élément img avec la source de l'image
+    const newImage = document.createElement("img");
+    newImage.src = project.imageUrl;
+    newImage.alt = project.title;
+
+    // Crée un élément figcaption avec le titre de l'image
+    const newCaption = document.createElement("figcaption");
+    newCaption.textContent = project.title;
+
+    // Ajoute l'image et le titre à la figure
+    newFigure.appendChild(newImage);
+    newFigure.appendChild(newCaption);
+
+    // Ajoute la nouvelle figure à la galerie principale
+    mainGallery.appendChild(newFigure);
 }
