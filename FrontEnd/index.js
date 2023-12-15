@@ -112,3 +112,4 @@ function setSelectedFilter(selectedButton) {
     });
     selectedButton.classList.add("filter-selected");
 };
+

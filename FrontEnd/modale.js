@@ -1,3 +1,5 @@
+// Variable Allprojects est indexé dans index.js
+
 // AFFICHER / FERMER LA MODALE
 const overlayModalContent = document.querySelector(".overlay-modal-content");
 const modalGallery = document.querySelector(".modal-gallery");
@@ -12,7 +14,7 @@ for (const btn of allBtnEdition) {
         event.preventDefault();
         overlayModalContent.style.display = "flex";
         modalContent.style.display = "flex";
-        modalProjects(allProjects);
+        createProjectForModalDisplay();
     })
 }
 
@@ -43,28 +45,7 @@ window.onclick = (event) => {
 }
 
 // FONCTION AFFICHER LES PROJETS
-function modalProjects(projects) {
-    const createModalGallery = () => {
-        const modalGalleryHTML = projects.map((project) => /*html*/ `
-            <figure data-project-id="${project.id}">
-                <img src="${project.imageUrl}" alt="${project.title}">
-                <i class="fa-solid fa-trash-can"></i>
-            </figure>
-        `).join('');
-
-        // Cherche la section avec l'id "modal-content"
-        const portfolioSection = document.getElementById("modal-content");
-
-        // Vérifie s'il y a déjà une galerie, si oui, la remplace
-        const existingGallery = document.querySelector(".modal-gallery");
-        if (existingGallery) {
-            existingGallery.innerHTML = modalGalleryHTML;
-        } else {
-            // Sinon, ajoute la nouvelle galerie à l'intérieur de la section "portfolio"
-            portfolioSection.insertAdjacentHTML("beforeend", `<div class="modal-gallery">${modalGalleryHTML}</div>`);
-        }
-    };
-
+function createProjectForModalDisplay() {
     createModalGallery(); // Appel de la fonction createModalGallery pour créer la galerie d'images
 
     // Sélectionne toutes les figures de la galerie
@@ -78,20 +59,42 @@ function modalProjects(projects) {
             event.preventDefault();
             const projectId = figure.getAttribute("data-project-id");
             if (deleteIcon && event.target === deleteIcon) {
-                deleteWork(projectId, figure.querySelector("img").alt, localStorage.getItem("token"));
+                deleteWork(projectId, figure.querySelector("img").alt);
             }
         });
     });
 }
 
+// IMPORTATION DE LA GALLERIE
+function createModalGallery() {
+    const modalGalleryHTML = allProjects.map((project) => /*html*/ `
+        <figure data-project-id="${project.id}">
+            <img src="${project.imageUrl}" alt="${project.title}">
+            <i class="fa-solid fa-trash-can"></i>
+        </figure>
+    `).join('');
+
+    // Cherche la section avec l'id "modal-content"
+    const portfolioSection = document.getElementById("modal-content");
+
+    // Vérifie s'il y a déjà une galerie, si oui, la remplace
+    const existingGallery = document.querySelector(".modal-gallery");
+    if (existingGallery) {
+        existingGallery.innerHTML = modalGalleryHTML;
+    } else {
+        // Sinon, ajoute la nouvelle galerie à l'intérieur de la section "portfolio"
+        portfolioSection.insertAdjacentHTML("beforeend", `<div class="modal-gallery">${modalGalleryHTML}</div>`);
+    }
+};
+
 // SUPPRIMER PROJETS
-function deleteWork(projectId, projectTitle, token) {
+async function deleteWork(projectId, projectTitle) {
     const deleteConfirm = window.confirm(`Êtes-vous sûr de vouloir supprimer le projet : ${projectTitle} ?`);
     if (deleteConfirm) {
         const fetchDelete = fetch(`http://localhost:5678/api/works/${projectId}`, {
             method: "DELETE",
             headers: {
-                "Authorization": `Bearer ${token}`
+                "Authorization": `Bearer ${localStorage.getItem("token")}`
             }
         });
 
@@ -110,6 +113,11 @@ function deleteWork(projectId, projectTitle, token) {
                 if (deletedElementMain) {
                     deletedElementMain.remove();
                 }
+
+                // Mettez à jour allProjects après la suppression
+                allProjects = allProjects.filter(project => project.id !== projectId);
+                console.log("allProjects après suppression :", allProjects);
+
             } else {
                 // MESSAGE DE SUPPRESSION OK
             }
@@ -142,7 +150,7 @@ document.querySelector("#modal-return").addEventListener("click", (e) => {
     modalPhoto.style.display = "none";
     modalContent.style.display = "flex";
     overlayModalContent.style.display = "flex";
-    modalProjects();
+    createProjectForModalDisplay();
     resetForm();
 })
 
@@ -314,14 +322,12 @@ const sendWork = async (event) => {
     });
 
     if (response.ok) {
+        const newProject = await response.json();
+        allProjects.push(newProject);
         msgAddSuccessF();
         resetForm();
-        modalProjects();
+        createProjectForModalDisplay();
     } else {
         msgAddErrorF();
     }
 }
-
-
-
-
