@@ -348,6 +348,7 @@ const sendWork = async (event) => {
         resetForm();
         createProjectForModalDisplay();
         addImageToMain(newProject);
+        await refreshProjects();
     } else {
         msgAddErrorF();
     }
