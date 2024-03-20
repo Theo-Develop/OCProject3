@@ -91,7 +91,7 @@ function createModalGallery() {
 async function deleteWork(projectId, projectTitle) {
     const deleteConfirm = window.confirm(`Êtes-vous sûr de vouloir supprimer le projet : ${projectTitle} ?`);
     if (deleteConfirm) {
-        const fetchDelete = fetch(`http://localhost:5678/api/works/${projectId}`, {
+        const fetchDelete = /* fetch(`http://localhost:5678/api/works/${projectId}` */fetch(`http://sophie-bluel-api.vercel.app/api/works/${projectId}`, {
             method: "DELETE",
             headers: {
                 "Authorization": `Bearer ${localStorage.getItem("token")}`
@@ -129,7 +129,7 @@ async function deleteWork(projectId, projectTitle) {
 // FONCTION POUR RAFRAICHIR LA LISTE allProjects
 async function refreshProjects() {
     // Effectuez une requête au serveur pour obtenir la liste des projets
-    const response = await fetch("http://localhost:5678/api/works/", {
+    const response = await fetch("http://sophie-bluel-api.vercel.app/api/works/",/* fetch("http://localhost:5678/api/works/", */ {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${localStorage.getItem("token")}`
@@ -333,7 +333,7 @@ const sendWork = async (event) => {
     formData.append("title", title);
     formData.append("category", categorySelectId);
 
-    const response = await fetch("http://localhost:5678/api/works/", {
+    const response = await fetch("http://sophie-bluel-api.vercel.app/api/works/",/* fetch("http://localhost:5678/api/works/",  */{
         method: "POST",
         headers: {
             "Authorization": `Bearer ${token}`,

@@ -19,7 +19,7 @@ async function initialiseLoginForm() {
 
             try {
                 // Appel de la fonction fetch avec toutes les informations nécessaires
-                const response = await fetch("http://localhost:5678/api/users/login", {
+                const response = await fetch("http://sophie-bluel-api.vercel.app/api/users/login",/* fetch("http://localhost:5678/api/users/login", */ {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(user)

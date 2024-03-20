@@ -4,7 +4,8 @@ let allCategories = [];
 //Appel de la fonction initialise **évitez d'avoir autre chose que des fonctions en racines**
 function initialise() {
     // Récupération des projets
-    fetch("http://localhost:5678/api/works")
+    /* fetch("http://localhost:5678/api/works") */
+    fetch("http://sophie-bluel-api.vercel.app/api/works")
         .then(response => response.json())
         .then(data => {
             allProjects = data;
@@ -52,7 +53,8 @@ function initialise() {
 
 // Fonction pour récupérer les catégories
 function getCategories() {
-    return fetch("http://localhost:5678/api/categories")
+    return fetch("http://sophie-bluel-api.vercel.app/api/categories")
+        /* fetch("http://localhost:5678/api/categories") */
         .then(response => response.json())
         .then(categories => categories);
 }
